@@ -3,6 +3,7 @@ import { fetchProducts } from '../services/fakestore';
 import Rating from '../components/Rating';
 import FilterComponent from '../components/FilterComponent';
 import { Link } from 'react-router-dom';
+import heroImage from '../assets/hero_image.webp';
 
 const ProductListing = () => {
   const [products, setProducts] = useState([]);
@@ -13,9 +14,7 @@ const ProductListing = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [priceRange, setPriceRange] = useState([0, 1000]);
   const productsPerPage = 8;
-  
 
-  
   useEffect(() => {
     const fetchAllProducts = async () => {
       try {
@@ -32,11 +31,9 @@ const ProductListing = () => {
     fetchAllProducts();
   }, []);
 
-  
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-       
         const exampleCategories = ['electronics', 'jewelery', "men's clothing", "women's clothing"];
         setCategories(exampleCategories);
         setLoadingFilters(false);
@@ -49,14 +46,12 @@ const ProductListing = () => {
     fetchCategories();
   }, []);
 
-  
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
   const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
 
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
 
-  
   const handlePageChange = (pageNumber) => {
     if (pageNumber >= 1 && pageNumber <= totalPages) {
       setCurrentPage(pageNumber);
@@ -74,19 +69,16 @@ const ProductListing = () => {
 
   const handlePriceChange = (range) => {
     setPriceRange(range);
-console.log(range)
     const filtered = products.filter(
       (product) =>
         (!categories.length || categories.includes(product.category)) &&
         product.price >= range[0] &&
         product.price <= range[1]
     );
-    console.log(filtered)
     setFilteredProducts(filtered);
     setCurrentPage(1);
   };
 
-  
   const handleSortChange = (sortOption) => {
     const sorted = [...filteredProducts].sort((a, b) => {
       if (sortOption === 'asc') return a.price - b.price;
@@ -105,81 +97,94 @@ console.log(range)
   }
 
   return (
-    <div className="p-4 sm:p-8 flex flex-col md:flex-row gap-6">
-  
-  <div className="w-full md:w-1/4">
-    <FilterComponent
-      categories={categories}
-      onFilterChange={handleFilterChange}
-      onSortChange={handleSortChange}
-      onPriceRangeChange={handlePriceChange}
-    />
-  </div>
+    <div className="p-4 sm:p-8">
+      <div className="w-full mb-8 h-96">
+        <img
+          src={heroImage}
+          alt="Hero"
+          className="w-full h-96 object-fill rounded-lg shadow-md"
+        />
+      </div>
 
-  <div className="w-full md:w-3/4">
-    <h1 className="text-2xl font-bold mb-4">Products</h1>
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-      {currentProducts.map((product) => (
-        <Link to={`/products/${product.id}`} >
-        <div key={product.id} className="p-4 border rounded-lg shadow-sm hover:shadow-xl">
-          <img
-            src={product.image}
-            alt={product.title}
-            className="w-full h-48 object-contain mb-2"
+      <div className="flex flex-col md:flex-row gap-6">
+       
+        <div className="w-full md:w-1/4">
+          <FilterComponent
+            categories={categories}
+            onFilterChange={handleFilterChange}
+            onSortChange={handleSortChange}
+            onPriceRangeChange={handlePriceChange}
           />
-          <h2 className="text-lg font-semibold">{product.title}</h2>
-          <p className="text-gray-700 font-semibold flex items-center">
-            ${product.price}
-            <span className="ml-2">
-              <Rating rating={product.rating.rate} />
-            </span>
-          </p>
         </div>
-        </Link>
-      ))}
+
+        <div className="w-full md:w-3/4">
+        
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {currentProducts.map((product) => (
+              <Link to={`/products/${product.id}`} key={product.id}>
+                <div className="p-4 border rounded-lg shadow-sm hover:shadow-xl h-full bg-gray-200">
+                  <img
+                    src={product.image}
+                    alt={product.title}
+                    className="w-full h-48 object-contain mb-2"
+                  />
+                  <h2 className="text-lg font-semibold truncate" title={product.title}>
+                    {product.title.length > 80 ? product.title.slice(0, 80) + '...' : product.title}
+                  </h2>
+                  <p className="text-gray-700 font-semibold flex items-center">
+                    ${product.price}
+                    <span className="ml-10">
+                      <Rating rating={product.rating.rate} />
+                    </span>
+                  </p>
+                </div>
+              </Link>
+            ))}
+          </div>
+
+          {/* Pagination */}
+          <div className="flex justify-center items-center mt-6 space-x-2">
+            <button
+              onClick={() => handlePageChange(currentPage - 1)}
+              className={`px-4 py-2 border rounded ${
+                currentPage === 1
+                  ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
+                  : 'bg-white text-blue-500 hover:bg-blue-100'
+              }`}
+              disabled={currentPage === 1}
+            >
+              Previous
+            </button>
+
+            {Array.from({ length: totalPages }, (_, index) => (
+              <button
+                key={index + 1}
+                onClick={() => handlePageChange(index + 1)}
+                className={`px-4 py-2 border rounded ${
+                  currentPage === index + 1
+                    ? 'bg-blue-500 text-white'
+                    : 'bg-white text-blue-500 hover:bg-blue-100'
+                }`}
+              >
+                {index + 1}
+              </button>
+            ))}
+
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              className={`px-4 py-2 border rounded ${
+                currentPage === totalPages
+                  ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
+                  : 'bg-white text-blue-500 hover:bg-blue-100'
+              }`}
+              disabled={currentPage === totalPages}
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
-
-    <div className="flex justify-center items-center mt-6 space-x-2">
-      <button
-        onClick={() => handlePageChange(currentPage - 1)}
-        className={`px-4 py-2 border rounded ${
-          currentPage === 1
-            ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
-            : 'bg-white text-blue-500 hover:bg-blue-100'
-        }`}
-        disabled={currentPage === 1}
-      >
-        Previous
-      </button>
-
-      {Array.from({ length: totalPages }, (_, index) => (
-        <button
-          key={index + 1}
-          onClick={() => handlePageChange(index + 1)}
-          className={`px-4 py-2 border rounded ${
-            currentPage === index + 1
-              ? 'bg-blue-500 text-white'
-              : 'bg-white text-blue-500 hover:bg-blue-100'
-          }`}
-        >
-          {index + 1}
-        </button>
-      ))}
-
-      <button
-        onClick={() => handlePageChange(currentPage + 1)}
-        className={`px-4 py-2 border rounded ${
-          currentPage === totalPages
-            ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
-            : 'bg-white text-blue-500 hover:bg-blue-100'
-        }`}
-        disabled={currentPage === totalPages}
-      >
-        Next
-      </button>
-    </div>
-  </div>
-</div>
   );
 };
 

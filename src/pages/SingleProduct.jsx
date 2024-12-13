@@ -1,32 +1,62 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { fetchProductById } from '../services/fakestore'; 
+import React, { useState, useEffect, useRef } from "react";
+import { useParams } from "react-router-dom";
+import { fetchProductById } from "../services/fakestore";
+import useCartStore from "../store/cartStore";
+import { useSnackbar } from "notistack"; 
 
 const SingleProduct = () => {
   const { id } = useParams(); 
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [quantity, setQuantity] = useState(1);
-  const [selectedSize, setSelectedSize] = useState('M');
-
+  const [selectedSize, setSelectedSize] = useState("M");
+  const { items: cart, addItem } = useCartStore();
+  const { enqueueSnackbar } = useSnackbar();
+  
   useEffect(() => {
     const getProduct = async () => {
       try {
         const data = await fetchProductById(id);
         setProduct(data);
-        setLoading(false);
       } catch (err) {
-        setError('Failed to fetch product details. Please try again later.');
-        setLoading(false);
+        setError("Failed to fetch product details. Please try again later.");
+      } finally {
+        setLoading(false); 
       }
     };
-
+  
     getProduct();
-  }, [id]);
+  }, [id]); 
 
   const increaseQuantity = () => setQuantity((prev) => prev + 1);
   const decreaseQuantity = () => setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
+
+  const handleAddToCart = () => {
+    if (!product) {
+      enqueueSnackbar("Product details are not available.", { variant: "error" });
+      return;
+    }
+
+    const isProductInCart = cart.find(
+      (item) => item.id === product.id && item.size === selectedSize
+    ); 
+    if (isProductInCart) {
+      enqueueSnackbar("Product is already in the cart!", { variant: "warning" });
+      return;
+    }
+
+    addItem({
+      id: product.id,
+      name: product.title,
+      price: product.price,
+      quantity: quantity,
+      size: selectedSize,
+      image: product.image,
+    });
+
+    enqueueSnackbar("Product added to the cart!", { variant: "success" });
+  };
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
@@ -35,7 +65,6 @@ const SingleProduct = () => {
     <div className="max-w-6xl mx-auto p-6">
       <h1 className="text-xl font-bold mb-4">Single Product View</h1>
       <div className="flex flex-col md:flex-row gap-8 bg-gray-100 p-6 rounded-lg shadow">
-       
         <div className="flex-1">
           <div className="bg-gray-300 rounded-lg h-96 flex justify-center items-center">
             <img
@@ -52,16 +81,17 @@ const SingleProduct = () => {
           <p className="text-xl font-bold text-green-600 my-2">${product.price}</p>
           <p className="text-gray-700 my-4">{product.description}</p>
 
+          {/* Size Selection */}
           <div className="my-4">
             <label className="block mb-2 font-semibold">Size</label>
             <div className="flex gap-4">
-              {['S', 'M', 'L'].map((size) => (
+              {["S", "M", "L"].map((size) => (
                 <button
                   key={size}
                   className={`px-4 py-2 border rounded ${
                     selectedSize === size
-                      ? 'bg-black text-white'
-                      : 'bg-white text-black'
+                      ? "bg-black text-white"
+                      : "bg-white text-black"
                   }`}
                   onClick={() => setSelectedSize(size)}
                 >
@@ -88,12 +118,15 @@ const SingleProduct = () => {
             </button>
           </div>
 
-          <button className="w-full bg-black text-white py-3 rounded my-4">
+          <button
+            onClick={handleAddToCart}
+            className="w-full bg-black text-white py-3 rounded my-4"
+          >
             Add to Cart - ${product.price * quantity}
           </button>
 
           <p className="text-sm text-gray-600">
-            Free standard shipping |{' '}
+            Free standard shipping |{" "}
             <span className="underline text-gray-800">Free Returns</span>
           </p>
         </div>

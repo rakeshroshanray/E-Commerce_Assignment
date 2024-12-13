@@ -1,9 +1,9 @@
-import ProductListing from "../pages/ProductListing";
+// import ProductListing from "../pages/ProductListing";
 
 import React from 'react'
 
 function Rating({rating}) {
-  console.log(rating.toFixed())
+  //console.log(rating.toFixed())
   return (
     <div>{Array(Math.round(rating)).fill(" ").map((_,idx)=>{
      return <span key={idx} style={{ color: "gold" }}>

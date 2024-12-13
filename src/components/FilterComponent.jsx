@@ -5,23 +5,21 @@ const FilterComponent = ({ categories, onFilterChange, onSortChange, onPriceRang
   const [sortOption, setSortOption] = useState('asc');
   const [priceRange, setPriceRange] = useState([0, 1000]);
 
-  // Handle category selection
   const handleCategoryChange = (category) => {
     const updatedCategories = selectedCategories.includes(category)
       ? selectedCategories.filter((cat) => cat !== category)
       : [...selectedCategories, category];
 
     setSelectedCategories(updatedCategories);
-    onFilterChange(updatedCategories); // Pass selected categories to parent
+    onFilterChange(updatedCategories); 
   };
 
-  // Handle sort option change
+
   const handleSortChange = (e) => {
     setSortOption(e.target.value);
     onSortChange(e.target.value);
   };
 
-  // Handle price range change
   const handlePriceChange = (e) => {
     const value = parseFloat(e.target.value);
     const range = [...priceRange];
@@ -33,10 +31,9 @@ const FilterComponent = ({ categories, onFilterChange, onSortChange, onPriceRang
   };
 
   return (
-    <div className="p-4 border rounded shadow-sm">
+    <div className="p-4 border rounded shadow-sm bg-gray-200">
       <h2 className="text-xl font-bold mb-4">Filters</h2>
 
-      {/* Categories */}
       <div className="mb-4">
         <h3 className="text-lg font-semibold">Categories</h3>
         {categories.map((category) => (
@@ -56,7 +53,6 @@ const FilterComponent = ({ categories, onFilterChange, onSortChange, onPriceRang
         ))}
       </div>
 
-      {/* Sorting */}
       <div className="mb-4">
         <h3 className="text-lg font-semibold">Sort By</h3>
         <select
@@ -71,7 +67,6 @@ const FilterComponent = ({ categories, onFilterChange, onSortChange, onPriceRang
         </select>
       </div>
 
-      {/* Price Range */}
       <div className="mb-6">
         <h3 className="font-semibold mb-2">Price Range</h3>
         <div className="flex items-center space-x-2">
