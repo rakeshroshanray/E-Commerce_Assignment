@@ -134,5 +134,5 @@ For any inquiries, contact:
 
 ---
 
-&copy; {new Date().getFullYear()} Rakesh Roshan. All rights reserved.
+&copy; 2024 Rakesh Roshan. All rights reserved.
 
