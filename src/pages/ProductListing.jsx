@@ -7,6 +7,7 @@ import heroImage from '../assets/hero_image.webp';
 import useWishlistStore from '../store/wishlistStore';
 import useAuthStore from '../store/authStore'; 
 import { enqueueSnackbar } from 'notistack';
+import { ShimmerLoadingPage, ShimmerPlaceholder } from '../components/LoadingComponent'; // Import shimmer components
 
 const ProductListing = () => {
   const [products, setProducts] = useState([]);
@@ -121,7 +122,7 @@ const ProductListing = () => {
   };
 
   if (loadingProducts || loadingFilters) {
-    return <div className="text-center mt-10">Loading...</div>;
+    return <ShimmerLoadingPage />; 
   }
 
   return (
@@ -136,58 +137,60 @@ const ProductListing = () => {
 
       <div className="flex flex-col md:flex-row gap-6">
         <div className="w-full md:w-1/4">
-          <FilterComponent
-            categories={categories}
-            onFilterChange={handleFilterChange}
-            onSortChange={handleSortChange}
-            onPriceRangeChange={handlePriceChange}
-          />
+          {loadingFilters ? (
+            <ShimmerPlaceholder /> 
+          ) : (
+            <FilterComponent
+              categories={categories}
+              onFilterChange={handleFilterChange}
+              onSortChange={handleSortChange}
+              onPriceRangeChange={handlePriceChange}
+            />
+          )}
         </div>
 
         <div className="w-full md:w-3/4">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {currentProducts.map((product) => (
-             
-              <div key={product.id} className="p-4 border rounded-lg shadow-sm hover:shadow-xl h-full bg-gray-200 relative">
-                <Link to={`/products/${product.id}`} key={product.id}>
-                <img
-                  src={product.image}
-                  alt={product.title}
-                  className="w-full h-48 object-contain mb-2"
-                />
-                </Link>
-                <h2 className="text-lg font-semibold truncate" title={product.title}>
-                  {product.title.length > 80 ? product.title.slice(0, 80) + '...' : product.title}
-                </h2>
-                <p className="text-gray-700 font-semibold flex items-center">
-                  ${Math.ceil(product.price)}
-                  <span className="ml-10">
-                    <Rating rating={product.rating.rate} />
-                  </span>
-                </p>
-                <button
-                  onClick={() => toggleWishlist(product)}
-                  className={`absolute top-4 right-4 p-2 rounded-full ${
-                    isInWishlist(product.id)
-                      ? 'bg-red-500 text-white hover:bg-red-600'
-                      : 'bg-gray-300 text-gray-600 hover:bg-gray-400'
-                  }`}
-                >
-                  {isInWishlist(product.id) ? '❤️' : '♡'}
-                </button>
-              </div>
-            ))}
-            
+            {loadingProducts ? (
+              Array.from({ length: 8 }).map((_, index) => <ShimmerPlaceholder key={index} />) 
+            ) : (
+              currentProducts.map((product) => (
+                <div key={product.id} className="p-4 border rounded-lg shadow-sm hover:shadow-xl h-full bg-gray-200 relative">
+                  <Link to={`/products/${product.id}`} key={product.id}>
+                    <img
+                      src={product.image}
+                      alt={product.title}
+                      className="w-full h-48 object-contain mb-2"
+                    />
+                  </Link>
+                  <h2 className="text-lg font-semibold truncate" title={product.title}>
+                    {product.title.length > 80 ? product.title.slice(0, 80) + '...' : product.title}
+                  </h2>
+                  <p className="text-gray-700 font-semibold flex items-center">
+                    ${Math.ceil(product.price)}
+                    <span className="ml-10">
+                      <Rating rating={product.rating.rate} />
+                    </span>
+                  </p>
+                  <button
+                    onClick={() => toggleWishlist(product)}
+                    className={`absolute top-4 right-4 p-2 rounded-full ${
+                      isInWishlist(product.id)
+                        ? 'bg-red-500 text-white hover:bg-red-600'
+                        : 'bg-gray-300 text-gray-600 hover:bg-gray-400'
+                    }`}
+                  >
+                    {isInWishlist(product.id) ? '❤️' : '♡'}
+                  </button>
+                </div>
+              ))
+            )}
           </div>
-          
+
           <div className="flex justify-center items-center mt-6 space-x-2">
             <button
               onClick={() => handlePageChange(currentPage - 1)}
-              className={`px-4 py-2 border rounded ${
-                currentPage === 1
-                  ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
-                  : 'bg-white text-black-500 hover:bg-amber-300'
-              }`}
+              className={`px-4 py-2 border rounded ${currentPage === 1 ? 'bg-gray-200 text-gray-500 cursor-not-allowed' : 'bg-white text-black-500 hover:bg-amber-300'}`}
               disabled={currentPage === 1}
             >
               Previous
@@ -197,11 +200,7 @@ const ProductListing = () => {
               <button
                 key={index + 1}
                 onClick={() => handlePageChange(index + 1)}
-                className={`px-4 py-2 border rounded ${
-                  currentPage === index + 1
-                    ? 'bg-amber-800 text-white'
-                    : 'bg-white text-black-500 hover:bg-amber-300'
-                }`}
+                className={`px-4 py-2 border rounded ${currentPage === index + 1 ? 'bg-amber-800 text-white' : 'bg-white text-black-500 hover:bg-amber-300'}`}
               >
                 {index + 1}
               </button>
@@ -209,11 +208,7 @@ const ProductListing = () => {
 
             <button
               onClick={() => handlePageChange(currentPage + 1)}
-              className={`px-4 py-2 border rounded ${
-                currentPage === totalPages
-                  ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
-                  : 'bg-white text-black-500 hover:bg-amber-300'
-              }`}
+              className={`px-4 py-2 border rounded ${currentPage === totalPages ? 'bg-gray-200 text-gray-500 cursor-not-allowed' : 'bg-white text-black-500 hover:bg-amber-300'}`}
               disabled={currentPage === totalPages}
             >
               Next

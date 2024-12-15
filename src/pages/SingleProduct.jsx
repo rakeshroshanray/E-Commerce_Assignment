@@ -4,6 +4,7 @@ import { fetchProductById } from "../services/fakestore";
 import useCartStore from "../store/cartStore";
 import useWishlistStore from "../store/wishlistStore";
 import { useSnackbar } from "notistack";
+import { ShimmerLoadingPage, ShimmerPlaceholder } from '../components/LoadingComponent';
 
 const SingleProduct = () => {
   const { id } = useParams();
@@ -78,7 +79,7 @@ const SingleProduct = () => {
     }
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <ShimmerLoadingPage />;
   if (error) return <div>{error}</div>;
 
   const inWishlist = isInWishlist(product?.id);

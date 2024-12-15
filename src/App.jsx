@@ -10,13 +10,12 @@ import useAuthStore from "./store/authStore";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import WishlistPage from "./pages/WishlistPage";
+import Footer from './components/Footer';
 
 const App = () => {
   const { initializeAuth, isAuthenticated } = useAuthStore();
-
   useEffect(() => {
     initializeAuth();
-    //setIsLoading(false);
   }, [initializeAuth]);
 
   return (
@@ -46,6 +45,7 @@ const App = () => {
           />
         </Routes>
       </main>
+      <Footer />
     </Router>
   );
 };
