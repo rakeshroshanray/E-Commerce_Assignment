@@ -80,8 +80,7 @@ const SingleProduct = () => {
           <p className="text-gray-500 text-sm my-2">by Vendor Name</p>
           <p className="text-xl font-bold text-green-600 my-2">${product.price}</p>
           <p className="text-gray-700 my-4">{product.description}</p>
-
-          {/* Size Selection */}
+          
           <div className="my-4">
             <label className="block mb-2 font-semibold">Size</label>
             <div className="flex gap-4">

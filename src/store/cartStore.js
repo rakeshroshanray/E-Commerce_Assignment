@@ -29,7 +29,6 @@ const useCartStore = create((set) => ({
       return { items: filteredItems, totalAmount: newTotal };
     }),
 
-  // Update item quantity
   updateQuantity: (id, quantity) =>
     set((state) => {
       const updatedItems = state.items.map((item) => {

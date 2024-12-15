@@ -4,11 +4,8 @@ import { Link, useLocation } from 'react-router-dom';
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation(); 
-
   const isActive = (path) => location.pathname === path ? 'text-amber-800 font-bold' : 'text-stone-700';
- 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
-
   const closeMenu = () => setIsMenuOpen(false);
 
   return (

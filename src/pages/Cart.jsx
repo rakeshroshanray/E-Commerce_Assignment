@@ -112,7 +112,6 @@ const CartPage = () => {
               </div>
             </div>
 
-            {/* Coupon Code Section */}
             <div className="my-4">
               <input
                 type="text"
@@ -128,7 +127,6 @@ const CartPage = () => {
         </div>
       )}
 
-      {/* Order Information Section */}
       <div className="mt-8 bg-gray-50 p-6 rounded-lg shadow-sm border">
         <h3 className="text-lg font-semibold mb-4">Order Information</h3>
         <p className="text-sm text-gray-600">This is our example return policy which is everything you need to know about our returns.</p>
