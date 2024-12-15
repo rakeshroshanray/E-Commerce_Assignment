@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { enqueueSnackbar } from 'notistack';
 import { useNavigate } from 'react-router-dom';
-
+import useAuthStore from '../store/authStore'; 
 const Login = () => {
   const [formData, setFormData] = useState({
     email: '',
@@ -9,6 +9,7 @@ const Login = () => {
   });
 
   const navigate = useNavigate();
+  const { login } = useAuthStore();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -32,7 +33,9 @@ const Login = () => {
 
     if (user) {
       enqueueSnackbar('Login successful!', { variant: 'success' });
+      login(user);
       localStorage.setItem('loggedInUser', JSON.stringify(user));
+
       navigate('/');
     } else {
       enqueueSnackbar('Invalid email or password.', { variant: 'error' });

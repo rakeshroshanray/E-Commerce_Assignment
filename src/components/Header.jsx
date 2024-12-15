@@ -1,12 +1,23 @@
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import useAuthStore from '../store/authStore'; 
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation(); 
+  const navigate = useNavigate();
+
+  const { isAuthenticated, logout } = useAuthStore(); 
+
   const isActive = (path) => location.pathname === path ? 'text-amber-800 font-bold' : 'text-stone-700';
+
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const closeMenu = () => setIsMenuOpen(false);
+
+  const handleLogout = () => {
+    logout(); 
+    navigate('/login'); 
+  };
 
   return (
     <header className="fixed top-0 left-0 w-full bg-gray-100 shadow-md z-50">
@@ -49,12 +60,21 @@ const Header = () => {
           </div>
 
           <div>
-            <Link
-              to="/login"
-              className={`text-lg font-semibold hover:text-amber-800 transition duration-200 ${isActive('/login')}`}
-            >
-              Login
-            </Link>
+            {!isAuthenticated ? (
+              <Link
+                to="/login"
+                className={`text-lg font-semibold hover:text-amber-800 transition duration-200 ${isActive('/login')}`}
+              >
+                Login
+              </Link>
+            ) : (
+              <button
+                onClick={handleLogout}
+                className="text-lg font-semibold hover:text-amber-800 transition duration-200"
+              >
+                Logout
+              </button>
+            )}
           </div>
         </div>
       </nav>
@@ -85,16 +105,26 @@ const Header = () => {
         </div>
       </div>
 
-      <div className="lg:hidden fixed top-0 right-0  flex justify-end items-center p-4">
-        <Link
-          to="/login"
-          className={`text-lg font-semibold hover:text-amber-800 transition duration-200 ${isActive('/login')}`}
-        >
-          Login
-        </Link>
+      <div className="lg:hidden fixed top-0 right-0 flex justify-end items-center p-4">
+        {!isAuthenticated ? (
+          <Link
+            to="/login"
+            className={`text-lg font-semibold hover:text-amber-800 transition duration-200 ${isActive('/login')}`}
+          >
+            Login
+          </Link>
+        ) : (
+          <button
+            onClick={handleLogout}
+            className="text-lg font-semibold hover:text-amber-800 transition duration-200"
+          >
+            Logout
+          </button>
+        )}
       </div>
     </header>
   );
 };
 
 export default Header;
+

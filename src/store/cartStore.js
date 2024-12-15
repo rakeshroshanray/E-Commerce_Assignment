@@ -1,8 +1,9 @@
-import { create } from 'zustand';
+import { create } from "zustand";
+import { persistStore, saveToStorage } from "../utils/persistStore";
 
 const useCartStore = create((set) => ({
-  items: [], 
-  totalAmount: 0, 
+  items: persistStore("cartItems", []),
+  totalAmount: persistStore("cartTotal", 0),
 
   addItem: (item) =>
     set((state) => {
@@ -12,10 +13,13 @@ const useCartStore = create((set) => ({
       } else {
         state.items.push(item);
       }
-      return {
+      const updatedState = {
         items: [...state.items],
-        totalAmount: state.totalAmount + item.price * item.quantity,
+        totalAmount: Math.ceil(state.totalAmount + item.price * item.quantity),
       };
+      saveToStorage("cartItems", updatedState.items);
+      saveToStorage("cartTotal", updatedState.totalAmount);
+      return updatedState;
     }),
 
   removeItem: (id) =>
@@ -26,7 +30,10 @@ const useCartStore = create((set) => ({
         ? state.totalAmount - removedItem.price * removedItem.quantity
         : state.totalAmount;
 
-      return { items: filteredItems, totalAmount: newTotal };
+      const updatedState = { items: filteredItems, totalAmount: newTotal };
+      saveToStorage("cartItems", updatedState.items);
+      saveToStorage("cartTotal", updatedState.totalAmount);
+      return updatedState;
     }),
 
   updateQuantity: (id, quantity) =>
@@ -40,7 +47,10 @@ const useCartStore = create((set) => ({
         return item;
       });
 
-      return { items: updatedItems, totalAmount: state.totalAmount };
+      const updatedState = { items: updatedItems, totalAmount: state.totalAmount };
+      saveToStorage("cartItems", updatedState.items);
+      saveToStorage("cartTotal", updatedState.totalAmount);
+      return updatedState;
     }),
 }));
 

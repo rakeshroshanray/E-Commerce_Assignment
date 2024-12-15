@@ -9,11 +9,14 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import useAuthStore from "./store/authStore"; 
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
+import WishlistPage from "./pages/WishlistPage";
+
 const App = () => {
-  const initializeAuth = useAuthStore((state) => state.initializeAuth);
+  const { initializeAuth, isAuthenticated } = useAuthStore();
 
   useEffect(() => {
-    initializeAuth(); 
+    initializeAuth();
+    //setIsLoading(false);
   }, [initializeAuth]);
 
   return (
@@ -25,10 +28,18 @@ const App = () => {
           <Route path="/products/:id" element={<SingleProduct />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route 
+            path="/wishlist" 
+            element={ 
+            <ProtectedRoute isAuthenticated={isAuthenticated}>
+              <WishlistPage />
+            </ProtectedRoute>
+            } 
+            />
           <Route
             path="/cart"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
                 <CartPage />
               </ProtectedRoute>
             }
