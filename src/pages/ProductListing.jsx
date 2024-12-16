@@ -127,13 +127,13 @@ const ProductListing = () => {
 
   return (
     <div className="max-w-6xl mx-auto p-6">
-      <div className="w-full mb-6 h-96 ">
-        <img
-          src={heroImage}
-          alt="Hero"
-          className="w-full h-96 object-fit rounded-lg shadow-md"
-        />
-      </div>
+      <div className="w-full mb-6 aspect-[16/9]">
+  <img
+    src={heroImage}
+    alt="Hero"
+    className="w-full h-full object-cover rounded-lg shadow-md"
+  />
+   </div>
 
       <div className="flex flex-col md:flex-row gap-6">
         <div className="w-full md:w-1/4">
