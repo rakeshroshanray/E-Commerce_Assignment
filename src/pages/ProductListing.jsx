@@ -162,7 +162,7 @@ const ProductListing = () => {
                       alt={product.title}
                       className="w-full h-48 object-contain mb-2"
                     />
-                  </Link>
+                  
                   <h2 className="text-lg font-semibold truncate" title={product.title}>
                     {product.title.length > 80 ? product.title.slice(0, 80) + '...' : product.title}
                   </h2>
@@ -172,6 +172,7 @@ const ProductListing = () => {
                       <Rating rating={product.rating.rate} />
                     </span>
                   </p>
+                  </Link>
                   <button
                     onClick={() => toggleWishlist(product)}
                     className={`absolute top-4 right-4 ${
