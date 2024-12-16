@@ -17,21 +17,13 @@ const CartPage = () => {
 
   return (
     <div className="max-w-6xl mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-6">Your Cart</h1>
-
       {items.length === 0 ? (
         <p className="text-center text-gray-600">Your cart is empty!</p>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
          
           <div className="col-span-2 space-y-6">
-            <p className="text-sm text-gray-600">
-              Not ready to checkout?{" "}
-              <button className="text-blue-500 hover:underline"
-              onClick={() =>navigate('/')}>
-                Continue Shopping
-              </button>
-            </p>
+            
             {items.map((item) => {
               
               return (
@@ -83,6 +75,13 @@ const CartPage = () => {
                 </div>
               );
             })}
+            <p className="text-sm text-gray-600">
+              Not ready to checkout?{" "}
+              <button className="text-blue-500 hover:underline"
+              onClick={() =>navigate('/')}>
+                Continue Shopping
+              </button>
+            </p>
           </div>
 
           <div className="bg-gray-100 p-6 rounded-lg shadow-md border">

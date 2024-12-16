@@ -9,7 +9,7 @@ const Header = () => {
 
   const { isAuthenticated, logout } = useAuthStore(); 
 
-  const isActive = (path) => location.pathname === path ? 'text-amber-800 font-bold' : 'text-stone-700';
+  const isActive = (path) => location.pathname === path ? 'text-amber-800 text-lg font-bold' : 'text-stone-700';
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const closeMenu = () => setIsMenuOpen(false);
@@ -48,13 +48,13 @@ const Header = () => {
 
         <div className="hidden lg:flex justify-between items-center w-full px-4 lg:px-12">
           <div className="flex space-x-8">
-            <Link to="/" className={`text-lg font-semibold hover:text-amber-800 transition duration-200 ${isActive('/')}`}>
+            <Link to="/" className={`text-md font-semibold hover:text-lg hover:text-amber-800 transition duration-200 ${isActive('/')}`}>
               Home
             </Link>
-            <Link to="/cart" className={`text-lg font-semibold hover:text-amber-800 transition duration-200 ${isActive('/cart')}`}>
+            <Link to="/cart" className={`text-md font-semibold hover:text-lg hover:text-amber-800 transition duration-200 ${isActive('/cart')}`}>
               Cart
             </Link>
-            <Link to="/wishlist" className={`text-lg font-semibold hover:text-amber-800 transition duration-200 ${isActive('/wishlist')}`}>
+            <Link to="/wishlist" className={`text-md font-semibold hover:text-lg hover:text-amber-800 transition duration-200 ${isActive('/wishlist')}`}>
               Wishlist
             </Link>
           </div>
@@ -63,14 +63,14 @@ const Header = () => {
             {!isAuthenticated ? (
               <Link
                 to="/login"
-                className={`text-lg font-semibold hover:text-amber-800 transition duration-200 ${isActive('/login')}`}
+                className={`text-md font-semibold hover:text-lg hover:text-amber-800 transition duration-200 ${isActive('/login')}`}
               >
                 Login
               </Link>
             ) : (
               <button
                 onClick={handleLogout}
-                className="text-lg font-semibold hover:text-amber-800 transition duration-200"
+                className="text-md font-semibold hover:text-lg hover:text-amber-800 transition duration-200"
               >
                 Logout
               </button>
@@ -83,21 +83,21 @@ const Header = () => {
         <div className="flex flex-col space-y-4 p-4">
           <Link
             to="/"
-            className={`text-lg font-semibold hover:text-amber-800 ${isActive('/')}`}
+            className={`text-md font-semibold hover:text-lg hover:text-amber-800 ${isActive('/')}`}
             onClick={closeMenu}
           >
             Home
           </Link>
           <Link
             to="/cart"
-            className={`text-lg font-semibold hover:text-amber-800 ${isActive('/cart')}`}
+            className={`text-md font-semibold hover:text-lg hover:text-amber-800 ${isActive('/cart')}`}
             onClick={closeMenu}
           >
             Cart
           </Link>
           <Link
             to="/wishlist"
-            className={`text-lg font-semibold hover:text-amber-800 ${isActive('/wishlist')}`}
+            className={`text-md font-semibold hover:text-lg hover:text-amber-800 ${isActive('/wishlist')}`}
             onClick={closeMenu}
           >
             Wishlist
@@ -109,14 +109,14 @@ const Header = () => {
         {!isAuthenticated ? (
           <Link
             to="/login"
-            className={`text-lg font-semibold hover:text-amber-800 transition duration-200 ${isActive('/login')}`}
+            className={`text-md font-semibold hover:text-lg hover:text-amber-800 transition duration-200 ${isActive('/login')}`}
           >
             Login
           </Link>
         ) : (
           <button
             onClick={handleLogout}
-            className="text-lg font-semibold hover:text-amber-800 transition duration-200"
+            className="text-md font-semibold hover:text-lg hover:text-amber-800 transition duration-200"
           >
             Logout
           </button>

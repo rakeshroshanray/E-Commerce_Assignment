@@ -31,11 +31,11 @@ const FilterComponent = ({ categories, onFilterChange, onSortChange, onPriceRang
   };
 
   return (
-    <div className="p-4 border rounded shadow-sm bg-gray-200">
+    <div className="p-4 border rounded shadow-sm bg-gray-50">
       <h2 className="text-xl font-bold mb-4">Filters</h2>
 
       <div className="mb-4">
-        <h3 className="text-lg font-semibold">Categories</h3>
+        <h3 className="text-lg font-semibold mb-2">Categories</h3>
         {categories.map((category) => (
           <div key={category} className="flex items-center mb-2">
             <input
@@ -54,7 +54,7 @@ const FilterComponent = ({ categories, onFilterChange, onSortChange, onPriceRang
       </div>
 
       <div className="mb-4">
-        <h3 className="text-lg font-semibold">Sort By</h3>
+        <h3 className="text-lg font-semibold mb-2">Sort By</h3>
         <select
           value={sortOption}
           onChange={handleSortChange}
@@ -68,7 +68,7 @@ const FilterComponent = ({ categories, onFilterChange, onSortChange, onPriceRang
       </div>
 
       <div className="mb-6">
-        <h3 className="font-semibold mb-2">Price Range</h3>
+        <h3 className=" text-lg font-semibold mb-2">Price Range</h3>
         <div className="flex items-center space-x-2">
           <input
             type="number"

@@ -126,12 +126,12 @@ const ProductListing = () => {
   }
 
   return (
-    <div className="p-4 sm:p-8">
-      <div className="w-full mb-8 h-96">
+    <div className="max-w-6xl mx-auto p-6">
+      <div className="w-full mb-6 h-96 ">
         <img
           src={heroImage}
           alt="Hero"
-          className="w-full h-96 object-fill rounded-lg shadow-md"
+          className="w-full h-96 object-fit rounded-lg shadow-md"
         />
       </div>
 
@@ -155,7 +155,7 @@ const ProductListing = () => {
               Array.from({ length: 8 }).map((_, index) => <ShimmerPlaceholder key={index} />) 
             ) : (
               currentProducts.map((product) => (
-                <div key={product.id} className="p-4 border rounded-lg shadow-sm hover:shadow-xl h-full bg-gray-200 relative">
+                <div key={product.id} className="p-4 border rounded-lg shadow-sm hover:shadow-xl h-full relative">
                   <Link to={`/products/${product.id}`} key={product.id}>
                     <img
                       src={product.image}
@@ -174,13 +174,13 @@ const ProductListing = () => {
                   </p>
                   <button
                     onClick={() => toggleWishlist(product)}
-                    className={`absolute top-4 right-4 p-2 rounded-full ${
+                    className={`absolute top-4 right-4 ${
                       isInWishlist(product.id)
-                        ? 'bg-red-500 text-white hover:bg-red-600'
-                        : 'bg-gray-300 text-gray-600 hover:bg-gray-400'
+                        ? ' text-red-700 '
+                        : ' text-gray-600 '
                     }`}
                   >
-                    {isInWishlist(product.id) ? '❤️' : '♡'}
+                    {isInWishlist(product.id) ? <i class="fas fa-heart text-red-500 text-2xl hover:text-red-700"></i> : <i class="far fa-heart text-gray-500"></i>}
                   </button>
                 </div>
               ))

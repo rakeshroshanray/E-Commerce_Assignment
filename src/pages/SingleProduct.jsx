@@ -86,10 +86,9 @@ const SingleProduct = () => {
 
   return (
     <div className="max-w-6xl mx-auto p-6">
-      <h1 className="text-xl font-bold mb-4">Single Product View</h1>
-      <div className="flex flex-col md:flex-row gap-8 bg-gray-100 p-6 rounded-lg shadow">
+      <div className="flex flex-col md:flex-row gap-8 p-6 rounded-lg shadow">
         <div className="flex-1">
-          <div className="bg-gray-300 rounded-lg h-96 flex justify-center items-center">
+          <div className=" rounded-lg h-96 flex justify-center items-center">
             <img
               src={product.image}
               alt={product.title}
@@ -110,7 +109,7 @@ const SingleProduct = () => {
               {["S", "M", "L"].map((size) => (
                 <button
                   key={size}
-                  className={`px-4 py-2 border rounded ${
+                  className={`px-4 py-2 border rounded hover:bg-stone-800 hover:text-white ${
                     selectedSize === size
                       ? "bg-black text-white"
                       : "bg-white text-black"

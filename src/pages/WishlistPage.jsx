@@ -33,7 +33,7 @@ const WishlistPage = () => {
         ) : (
           wishlistItems.map((item) => (
            
-              <div className="bg-gray-50 p-4 rounded-lg shadow-sm hover:shadow-xl border">
+              <div className=" p-4 rounded-lg shadow-sm hover:shadow-xl border">
                  <Link to={`/products/${item.id}`} key={item.id}>
                 <img
                   src={item.image}
@@ -41,7 +41,7 @@ const WishlistPage = () => {
                   className="w-full h-48 object-contain mb-4"
                 />
                 <h3 className="text-lg font-semibold">{item.name}</h3>
-                <p className="text-sm text-gray-600 mb-4">${Math.ceil(item.price)}</p>
+                <p className="text-sm-bold text-black-600 mb-4">${Math.ceil(item.price)}</p>
                 </Link>
                 <button
                   onClick={() => removeFromWishlist(item.id)}
